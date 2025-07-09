@@ -1,0 +1,12 @@
+.menu1 {
+    display: flex;
+    justify-content: end;
+}
+
+
+.top-nav {
+    display: flex;
+    list-style-type: none;
+    gap: 10px
+
+}
