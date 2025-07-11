@@ -74,8 +74,17 @@ const orders = [
 
 document.addEventListener("DOMContentLoaded", () => { // đảm bảo cho DOM được tải xong, rồi mới thực hiện logic bên trong
 
-    const searchBtn = document.getElementById("myButton");
-    searchBtn.addEventListener("click", renderOrder)
+    const searchBtn = document.getElementById("searchBtn");
+    
+    searchBtn.addEventListener("click", () => { 
+        const searchValue = document.getElementById("searchInput").value;
+        if (searchValue.length > 0) {
+            console.log(searchValue.length)
+            searchByCusName(searchValue);
+        } else {
+            renderOrder()
+        }
+    })
 
     document.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -108,7 +117,29 @@ const renderOrder = () => {
         return orderHTML;
     })
     let htmlResult = orderUI.join('');
-    console.log(htmlResult)
+    document.getElementById("orderContainer").innerHTML = ""
+    document.getElementById("orderContainer").innerHTML += htmlResult
+}
+
+
+const searchByCusName = (name) => {
+    let searchedOrder = orders.filter(order => order.customer.includes(name) || order.customer.toLocaleLowerCase().includes(name));
+    let orderUI = searchedOrder.map((order, index) => {
+        let orderHTML =
+            `
+         <div class="order">
+            <h2>Order ${order.orderId}</h2>
+            <p>Customer: ${order.customer}</p>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="getOrderByIndex(${index})" >Update</button>
+            <button class="btn btn-danger"  onclick="removeOrderByIndex(${index})">Remove</button>
+        </div>
+        <hr>
+        `
+        return orderHTML;
+    })
+    let htmlResult = orderUI.join('');
     document.getElementById("orderContainer").innerHTML = ""
     document.getElementById("orderContainer").innerHTML += htmlResult
 }
